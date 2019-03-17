@@ -1,0 +1,128 @@
+//  Copyright (c) 2019 Gonzalo Müller Bravo.
+//  Licensed under the MIT License (MIT), see LICENSE.txt
+
+plugins {
+  id 'all.shared.gradle.project-style-checker' version '1.0.2'
+  id 'all.shared.gradle.code-common-tasks' version '1.0.1'
+  id 'com.moowork.node' version '1.2.0'
+}
+
+repositories {
+  jcenter()
+}
+
+node {
+  version = NODE_VERSION
+  download = true
+}
+
+final MAIN_FOLDER = "$projectDir/src/main"
+
+task assessStyleConfig(type: NpmTask) {
+  // NpmTask task settings
+  args = ['run', 'gradle-config-lint', baseStyleConfig.front.eslintNpmConfigArg, '--silent']
+  // gradle task settings
+  group = codeCommonTasks.groupForAssessTasks
+  inputs.file '.eslintrc.json'
+  inputs.file 'package.json'
+  inputs.files fileLister.obtainFullFileTree('config', [includes: ['*.js']])
+  inputs.property('configFile', baseStyleConfig.front.eslintNpmConfigArg)
+  outputs.upToDateWhen { true }
+}
+
+task assessStyleMain(type: NpmTask) {
+  // NpmTask task settings
+  args = ['run', 'main-lint', '--silent']
+  // gradle task settings
+  group = codeCommonTasks.groupForAssessTasks
+  inputs.file 'package.json'
+  inputs.file 'tslint.json'
+  inputs.files fileLister.obtainFullFileTree(MAIN_FOLDER, [includes: ['*.ts', '*.tsx']])
+  outputs.upToDateWhen { true }
+}
+
+task assessStyleCss(type: NpmTask) {
+  // NpmTask task settings
+  args = ['run', 'gradle-style-lint', baseStyleConfig.front.stylelintNpmConfigArg, '--silent']
+  // gradle task settings
+  group = codeCommonTasks.groupForAssessTasks
+  inputs.file 'package.json'
+  inputs.files fileLister.obtainFullFileTree(MAIN_FOLDER, [includes: ['*.css']])
+  inputs.property('configFile', baseStyleConfig.front.stylelintNpmConfigArg)
+  outputs.upToDateWhen { true }
+  shouldRunAfter 'assessStyleMain'
+}
+
+task assessMain {
+  dependsOn 'assessStyleMain', 'assessStyleCss'
+}
+
+task assemble(type: NpmTask) {
+  // NpmTask task settings
+  args = ['run', 'assemble', '--silent']
+  // gradle task settings
+  inputs.dir 'src/main'
+  inputs.file 'config/main/tsconfig.main.json'
+  inputs.file 'package.json'
+  outputs.dir 'build/www'
+}
+
+task assessStyleTest(type: NpmTask) {
+  // NpmTask task settings
+  args = ['run', 'gradle-test-eslint', baseStyleConfig.front.eslintNpmConfigArg, '--silent']
+  // gradle task settings
+  group = codeCommonTasks.groupForAssessTasks
+  inputs.dir 'config/test'
+  inputs.dir 'src/test'
+  inputs.file 'package.json'
+  inputs.file '.eslintrc.json'
+  inputs.property('configFile', baseStyleConfig.front.eslintNpmConfigArg)
+  outputs.upToDateWhen { true }
+  shouldRunAfter 'assessStyleMain'
+}
+
+task assessTest {
+  dependsOn 'assessStyleTest'
+}
+
+task test(type: NpmTask) {
+  // NpmTask task settings
+  args = ['run', 'test', '--silent']
+  // gradle task settings
+  inputs.dir 'config/test'
+  inputs.dir 'src/test'
+  inputs.file 'package.json'
+  outputs.dir 'build/reports/tests'
+}
+
+task assessStyleE2e(type: NpmTask) {
+  // NpmTask task settings
+  args = ['run', 'gradle-e2e-lint', baseStyleConfig.front.eslintNpmConfigArg, '--silent']
+  // gradle task settings
+  group = codeCommonTasks.groupForAssessTasks
+  inputs.property('configFile', baseStyleConfig.front.eslintNpmConfigArg)
+  inputs.dir 'src/e2e'
+  inputs.file '.eslintrc.json'
+  inputs.file 'package.json'
+  inputs.file 'src/e2e/.eslintrc.json'
+  outputs.upToDateWhen { true }
+  shouldRunAfter 'assessStyleMain'
+}
+
+task e2e(type: NpmTask) {
+  // NpmTask task settings
+  args = ['run', 'e2e', '--silent']
+  // gradle task settings
+  inputs.dir 'config/e2e'
+  inputs.dir 'src/main'
+  inputs.dir 'src/e2e'
+  inputs.file 'package.json'
+  shouldRunAfter 'test', 'assessStyleE2e', 'build'
+  outputs.dir 'build/reports/e2e'
+}
+
+task run(type: NpmTask) {
+  args = ['run', 'run', '--silent']
+}
+
+defaultTasks 'assessCommon', 'assessGradle', 'npmInstall', 'assessStyleConfig', 'build', 'e2e'

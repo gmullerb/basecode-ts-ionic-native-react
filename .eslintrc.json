@@ -1,0 +1,14 @@
+{
+  "env":{
+    "node": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 9,
+    "sourceType": "module"
+  },
+  "root": true,
+  "rules":{
+    "quotes":  ["error", "single"],
+    "semi": ["error", "never"]
+  }
+}
