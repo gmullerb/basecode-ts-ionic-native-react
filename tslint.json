@@ -72,6 +72,7 @@
     "no-var-keyword": true,
     "no-submodule-imports": [
       true,
+      "@ionic-native",
       "flux",
       "zone.js"
     ],

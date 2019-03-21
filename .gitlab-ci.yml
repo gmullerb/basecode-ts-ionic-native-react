@@ -18,6 +18,7 @@ stages:
   - test
   - assemble
   - e2e
+  - build
 
 create-cache:
   stage: inception
@@ -105,3 +106,63 @@ code-e2e:
     paths:
       - .gradle/
       - node_modules/
+
+android-4.1-build:
+  image: openjdk:8-jdk
+  stage: build
+  variables:
+    TOOLS_HOME: "/opt"
+    GRADLE_VERSION: "4.10.3"
+    GRADLE_HOME: "$TOOLS_HOME/gradle"
+    ANDROID_HOME: "$TOOLS_HOME/android-sdk"
+    ANDROID_API_VERSION: "16"
+    ANDROID_SDK_TOOLS_HASH: "4333796"
+    ANDROID_BUILD_TOOLS_VERSION: "28.0.3"
+    APK_FILE: "app-dev-android-4.1.$CI_COMMIT_SHORT_SHA.apk"
+  script:
+    - chmod +x config/ci/android-image-build.sh
+    - config/ci/android-image-build.sh >/dev/null
+    - export PATH=$GRADLE_HOME/bin:$ANDROID_HOME/platform-tools:$PATH
+    - ./gradlew buildAndroid
+    - cp cordova/platforms/android/build/outputs/apk/debug/android-debug.apk ./$APK_FILE
+  cache:
+    key: "${CI_COMMIT_SHA}"
+    policy: pull
+    untracked: true
+    paths:
+      - .gradle/
+      - node_modules/
+  artifacts:
+    name: $CI_PROJECT_NAME-android-4.1-build-$CI_COMMIT_SHORT_SHA
+    paths:
+      - $APK_FILE
+
+android-8.0-build:
+  image: openjdk:8-jdk
+  stage: build
+  variables:
+    TOOLS_HOME: "/opt"
+    GRADLE_VERSION: "4.10.3"
+    GRADLE_HOME: "$TOOLS_HOME/gradle"
+    ANDROID_HOME: "$TOOLS_HOME/android-sdk"
+    ANDROID_API_VERSION: "26"
+    ANDROID_SDK_TOOLS_HASH: "4333796"
+    ANDROID_BUILD_TOOLS_VERSION: "28.0.3"
+    APK_FILE: "app-dev-android-8.0.$CI_COMMIT_SHORT_SHA.apk"
+  script:
+    - chmod +x config/ci/android-image-build.sh
+    - config/ci/android-image-build.sh >/dev/null
+    - export PATH=$GRADLE_HOME/bin:$ANDROID_HOME/platform-tools:$PATH
+    - ./gradlew buildAndroid
+    - cp cordova/platforms/android/build/outputs/apk/debug/android-debug.apk ./$APK_FILE
+  cache:
+    key: "${CI_COMMIT_SHA}"
+    policy: pull
+    untracked: true
+    paths:
+      - .gradle/
+      - node_modules/
+  artifacts:
+    name: $CI_PROJECT_NAME-android-8.0-build-$CI_COMMIT_SHORT_SHA
+    paths:
+      - $APK_FILE

@@ -1,9 +1,11 @@
 //  Copyright (c) 2019 Gonzalo Müller Bravo.
 //  Licensed under the MIT License (MIT), see LICENSE.txt
 
-'use strict';
+'use strict'
 
-const webpack = require('webpack');
+const FilterWarningsPlugin = require('webpack-filter-warnings-plugin')
+const webpack = require('webpack')
+const path = require('path')
 
 const mainReactRule = {
   test: /\.ts(x?)$/,
@@ -12,7 +14,7 @@ const mainReactRule = {
     {
       loader: 'babel-loader',
       options: {
-        presets: ["@babel/preset-react", "@babel/preset-typescript"]
+        presets: ['@babel/preset-react', '@babel/preset-typescript']
       }
     },
     {
@@ -44,7 +46,7 @@ const testReactRule = {
   use: {
     loader: 'babel-loader',
     options: {
-      presets: ["@babel/preset-react"]
+      presets: ['@babel/preset-react']
     }
   }
 }
@@ -77,7 +79,15 @@ module.exports = {
   plugins: [
     new webpack.SourceMapDevToolPlugin({
       test: /\.ts(x)?$/
+    }),
+    new webpack.ContextReplacementPlugin(
+      /angular(\\|\/)core/,
+      path.join(__dirname, '../../src/main'),
+      {}
+    ),
+    new FilterWarningsPlugin({
+      exclude: /System\.import/
     })
   ],
   watch: false
-};
+}

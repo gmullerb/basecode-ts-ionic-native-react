@@ -1,8 +1,8 @@
-# Base Code for Typescript Ionic React App
+# Base Code for Typescript Ionic Native React App
 
-[![GitHub](https://img.shields.io/github/license/mashape/apistatus.svg)](/LICENSE.txt) ![version](https://img.shields.io/badge/version-March%202019-blue.svg) ![coverage](https://gitlab.com/gmullerb/basecode-ts-ionic-react/badges/master/coverage.svg)
+[![GitHub](https://img.shields.io/github/license/mashape/apistatus.svg)](/LICENSE.txt) ![version](https://img.shields.io/badge/version-March%202019-blue.svg) ![coverage](https://gitlab.com/gmullerb/basecode-ts-ionic-native-react/badges/master/coverage.svg)
 
-**This project is build with the purpose of given a base code from where to start developing a Ionic React app with little effort.**
+**This project is build with the purpose of given a base code from where to start developing a Ionic Native React app with little effort.**
 
 This project is licensed under the terms of the [MIT license](/LICENSE.txt).
 __________________
@@ -10,32 +10,32 @@ __________________
 ## Quick Start
 
 1. Clone (or download) the project, run:  
- `git clone https://github.com/gmullerb/basecode-ts-ionic-react`  
+ `git clone https://github.com/gmullerb/basecode-ts-ionic-native-react`  
   or  
- `git clone https://gitlab.com/gmullerb/basecode-ts-ionic-react`  
+ `git clone https://gitlab.com/gmullerb/basecode-ts-ionic-native-react`  
 
 2. Run `./gradlew` to install npm dependencies and to check the project.
 
 3. Run `./gradlew run`: to run the project.
 
-4. Open browser at `localhost:4200`.
+4. Open browser at `localhost:8000`.
 
-5. Jump to [Inside the Code](#Inside-the-Code).
-
+5. Jump to [Inside the Code](#Inside-the-Code) and Start developing your Ionic Native React app.
 __________________
 
 ## Goals
 
-* Provide a "well" documented base code from where to start developing [Ionic](https://ionicframework.com/) [React](https://reactjs.org/) [1].
+* Provide a "well" documented base code from where to start developing [Ionic](https://ionicframework.com/) Native([Cordova](http://cordova.apache.org/)) [React](https://reactjs.org/) apps[1].
   * "Well" documented in order to ease customization of this start point.
 * Provide basic React elements: Flux, Router.
 * Be untie as possible from Angular CLI [2].
 * Test code without typings [3].
+* Provide a basic browser platform, browser platform allows to do "platform independent" development, which can be very useful as start point.
 
 Some things may be Opinionated based on best practices and professional experience [4].
 
-> [1] This project does not include native (e.g. cordova), for that go to [basecode-ts-ionic-native-react project](https://github.com/gmullerb/basecode-ts-ionic-native-react).  
-> [2] Used for building, serving and e2e testing, currently [Ionic](https://ionicframework.com/) team is working in an "agnostic" approach.  
+> [1] This project include native (e.g. cordova), for non-native for that go to [basecode-ts-ionic-react project](https://github.com/gmullerb/basecode-ts-ionic-react).  
+> [2] Used for building, currently [Ionic](https://ionicframework.com/) team is working in an "agnostic" approach.  
 > [3] Main code use [Typescript](https://www.typescriptlang.org/), but some extra configuration changes can be done in order to use [Flow](https://flow.org/) can be used.  
 > [4] Some topics in the README files have _References_ so you can dig more on details. And code has been "widely" documented to assist you to understand some fragments.  
 
@@ -49,13 +49,14 @@ Some things may be Opinionated based on best practices and professional experien
   * Unit, Integration and End to end tests.
   * Code coverage checking.
 
-> [1] [Gradle](https://gradle.org/) will allow to have "really" isolated different Node/Npm environments for different projects, but npm or yarn can be used.
+> [1] [Gradle](https://gradle.org/) will allow to have "really" isolated different Node/Npm environments for different projects and **incremental builds**, but npm or yarn can be used, besides Cordova uses Gradle.
 
 ### Tools been used
 
 * Building.
   * [Gradle](https://www.java.com).
     * [Node plugin](https://plugins.gradle.org/plugin/com.moowork.node).
+    * [Cordova](http://cordova.apache.org/)
   * [npm](https://www.npmjs.com/).
 * Code Style Checking.
   * Javascript: [ESlint](https://eslint.org).
@@ -64,8 +65,8 @@ Some things may be Opinionated based on best practices and professional experien
   * Gradle: [CodeNarc](http://codenarc.sourceforge.net).
 * Test Driven Development.
   * Unit Test & Integration Test:
-    * [Jasmine](https://jasmine.github.io)
-    * [Enzyme](https://airbnb.io/enzyme)
+    * [Jasmine](https://jasmine.github.io).
+    * [Enzyme](https://airbnb.io/enzyme).
     * [Karma](https://karma-runner.github.io).
   * End to end tests:
     * [Protractor](http://www.protractortest.org).
@@ -85,13 +86,13 @@ Some things may be Opinionated based on best practices and professional experien
 Clone or download the project[1], in the desired folder execute:
 
 ```sh
-git clone https://github.com/gmullerb/basecode-ts-ionic-react
+git clone https://github.com/gmullerb/basecode-ts-ionic-native-react
 ```
 
 or
 
 ```sh
-git clone https://gitlab.com/gmullerb/basecode-ts-ionic-react
+git clone https://gitlab.com/gmullerb/basecode-ts-ionic-native-react
 ```
 
 > [1] [Cloning a repository](https://help.github.com/articles/cloning-a-repository/)
@@ -108,13 +109,19 @@ git clone https://gitlab.com/gmullerb/basecode-ts-ionic-react
 
 Npm scripts are defined in [package.json file](package.json):
 
-* `assemble`: will build the project.
-* `e2e`: runs E2E tests.
-* `main-lint`: will assess Main code using tslint.
-* `run`: runs Project.
-* `test`: runs Tests (Unit & Integration tests).
+* `assemble`: will build the Native project, targeting Browser.
+* `buildAndroid`: will build the Native project, targeting Android[1], i.e. `apk` file.
+  * `prebuildAndroid`: will update the project in order to have all required files for Cordova Android.
+    * This files should not be upload to the repository.
+* `e2e`: runs E2E tests with [Protractor](http://www.protractortest.org).
+  * `pree2e`: updates Webdriver.
+* `main-lint`: will assess Main code using [TSlint](https://palantir.github.io/tslint).
+* `run`: runs Native Browser Project.
+  * Go to the web browser look at the url: http://localhost:8000/.
+* `test`: runs Tests (Unit & Integration tests) using [Karma](https://karma-runner.github.io), [Jasmine](https://jasmine.github.io) and [Enzyme](https://airbnb.io/enzyme).
 
-> `gradle-*` scripts should not be run from npm, since some external files are download from the web, use the respective Gradle task.
+> `gradle-*` scripts should not be run from npm, since some external files are download from the web, use the respective Gradle task.  
+> [1] This requires "all" the Android SDK to be available.
 
 ### Gradle tasks
 
@@ -141,17 +148,38 @@ Additionally this project define some additional tasks:
 * `assessStyleTest`: will assess Test source code files using eslint (with rules from [base-style-config](https://github.com/gmullerb/base-style-config/blob/master/src/config/front/.eslintrc.json)).
 * `assessStyleE2e`: will assess E2E Test source code files using eslint (with rules from [base-style-config](https://github.com/gmullerb/base-style-config/blob/master/src/config/front/.eslintrc.json)).
 * `e2e`: runs E2E Tests.
-* `run`: runs Project.
-  * Go to the web browser look at the url: http://localhost:4200/.
+* `run`: runs Native Browser Project.
+  * Go to the web browser look at the url: http://localhost:8000/.
+* `buildAndroid`: will build the Native project, targeting Android[1], i.e. `apk` file.
 
-`./gradlew tasks --all`: will list all available tasks for the project.
+Finally:
+
+* `build`
+  * `check`
+    * `assess`
+      * `assessMain`
+        * `assessStyleMain`
+        * `assessStyleCss`
+        * `assessStyleTest`
+      * `assessTest`
+    * `test`
+  * `assemble`
+* `assessStyleConfig`
+* `assessStyleE2e`
+* `e2e`
+* `buildAndroid`
+* `run`
+
+Useful tasks:
+* `./gradlew tasks --all`: will list all available tasks for the project.
 
 * `gradlew`, will run default tasks [1]:
-  * [`assessGradle`](https://github.com/gmullerb/project-style-checker#features): will assess Gradle files.
-  * [`assessCommon`](https://github.com/gmullerb/project-style-checker#features): will assess All files.
+  * [`assessGradle`](https://github.com/gmullerb/project-style-checker#features): will assess Gradle files, provided by [project-style-checker plugin](https://github.com/gmullerb/project-style-checker).
+  * [`assessCommon`](https://github.com/gmullerb/project-style-checker#features): will assess All files, provided by [project-style-checker plugin](https://github.com/gmullerb/project-style-checker).
   * `npmInstall`: will install npm dependencies [2].
   * `assessStyleConfig`.
   * `build`.
+  * `assessStyleE2e`.
   * `e2e`.
 
 [1] Mainly the tasks that should be run before pushing the code to a repository.  
@@ -161,11 +189,12 @@ Additionally this project define some additional tasks:
 
 Some Gradle tasks match with Node scripts:
 
+* `assemble` task runs `assemble` script.
 * `assessStyleConfig` task runs `gradle-config-lint` script.
 * `assessStyleMain` task runs `main-lint` script.
 * `assessStyleCss` task runs `gradle-style-lint` script.
-* `assemble` task runs `assemble` script.
 * `assessStyleTest` task runs `gradle-test-eslint` script.
+* `buildAndroid` task runs task runs script.
 * `test` task runs `test` script.
 * `assessStyleE2e` task runs `gradle-e2e-lint` script.
 * `e2e` task runs `e2e` script.
@@ -182,6 +211,32 @@ Main project dependencies and versions are defined in [package.json file](packag
 
 > [1] Change versions: Some versions may be set to the latest using `*` or `+`, so it can get the latest version the first time the project is started,  although is recommended to set it to fixed values later. Some test dependencies may remain dynamic since this will not affect production build, and allow to have latest improvements and fixes.  
 > [2] Remember to change the root project name in [settings.gradle](settings.gradle), even in single project builds set rootProject.name = 'name' to avoid Continuous Integration servers issues.
+
+#### Cordova/Android Versions
+
+When building Android apps for a specific version, be aware that the support from Cordova depends on the [Cordova version](https://cordova.apache.org/docs/en/latest/guide/platforms/android).
+
+e.g.
+
+| Cordova version | Android version |
+|-----------------|-----------------|
+| 8.#.#           | 4.4 to 9.0.0    |
+| 6.#.#           | 4.1 to 8.0.0    |
+
+Then [cordova/package.json](cordova/package.json) and [cordova/config.xml](cordova/config.xml) must be adjusted together:
+
+[cordova/package.json](cordova/package.json):
+
+```json
+  "cordova-android": "6.5.0"
+```
+
+[cordova/config.xml](cordova/config.xml):
+
+```xml
+  <preference name="android-minSdkVersion" value="16" />
+```
+
 __________________
 
 ## Inside the Code
@@ -190,6 +245,7 @@ __________________
 
 * Folder `src/main`: Folder of Main source code.
 * Folder `src/test`: Folder of Test source code.
+* Folder `config`: Folder for configuration.
 * Folder `build`: is a generated folder where build results are placed and also tests and coverage reports.
 * Folder's name may use `_`, but not `-`.
 * Files' name may use `-`, but not `_`.
@@ -202,25 +258,33 @@ __________________
 Structure:
 
 ```
-  /config
-    /e2e
-    /main
-    /test
-    /typings
-  /src
-    /e2e
-    /environments
-    /main
-      /assets
-      /back
-      /front
-    /test
-      /back
-      /front
-    /theme
+  config/
+    ci/
+    e2e/
+    main/
+    test/
+    typings/
+  src/
+    e2e/
+    environments/
+    main/
+      assets/
+      back/
+      front/
+    test/
+      back/
+      front/
+    theme/
+  cordova/
+    resources/
+      android/
+      browser/
+      ios/
 ```
 
 * `config`: Configuration files.
+  * `ci`: Configuration files for CI tasks.
+    * `android-image-build.sh`: Script for installing the tools necessary for building Android app [1].
   * `e2e`: Configuration files for E2E tasks.
   * `main`: Configuration files for Main tasks.
   * `test`: Configuration files for Test tasks.
@@ -236,8 +300,13 @@ Structure:
     * `back`: Test source code for Non-Visual Main source code.
     * `front`: Test source code for Visual Main source code.
   * `theme`: Basically for Ionic theme assets.
+* `cordova`: Cordova files.
+  * `resources`: cordova resources, initially icons and splash Screens.
+  * `cordova/platforms/`, `cordova/plugins/` and `cordova/www/` are ignore by [git](.gitignore).
 
-### Ionic configuration for React
+> [1] This script can be extracted to a Docker image, but been here, will allow to give a starting point for that, beside the time for the job was almost the same than the one that used a Docker image (may be due to the size). Be Aware of the Gradle version, for some reason if installing a greater version that the one use by Cordova will give `Java heap space` error, then it is better to install the same version of Gradle used by Cordova.
+
+### Configuration
 
 #### Building tools
 
@@ -318,22 +387,74 @@ b. Previously created rules are added:
 
 > [1] Thanks to [mutable-webpack-angular-builder](https://github.com/gmullerb/mutable-webpack-angular-builder).
 
-##### package.json scripts
+#### Native configuration
 
-Some tasks are defined using "**transparent**" [`package.json`](package.json) tasks:
+Native dependencies that were not required by [basecode-ts-ionic-react project](https://github.com/gmullerb/basecode-ts-ionic-react) needs to be added:
 
-* `"gradle-config-lint": "eslint --config ${npm_config_eslintConfigFile} --color config/**/*.js"`: assesses Project JS configuration files,
-* `"gradle-e2e-lint": "eslint --config ${npm_config_eslintConfigFile} --color src/e2e/**/*.js"`: assesses E2E JS files,
-* `"gradle-style-lint": "stylelint --config ${npm_config_stylelintConfigFile} \"src/main/front/**/*.css\""`: assesses CSS files,
-* `"gradle-test-eslint": "eslint --config ${npm_config_eslintConfigFile} --color src/test/**/*.js"`: assesses Project configuration files,
-* `"main-lint": "tslint src/main/**/*.ts?"`: assesses Typescript files [1],
-* `"test": "karma start config/test/karma.conf.js --colors"`: runs Tests.
+* First of all, **`ionic.config.json` is required**.
 
-What is kept from Angular Cli?
+* Added Ionic Native dependencies and Cordova, [root `package.json`](package.json):
 
-* `"assemble": "ng build"`: will build the project.
-* `"e2e": "ng e2e"`: runs Project.
-* `"run": "ng serve"`: runs E2E tests.
+```json
+    "@ionic-native/core": "^5.0.0",
+    "@ionic-native/device": "^5.2.0",
+    "@ionic-native/geolocation": "^5.2.0",
+    "@ionic-native/splash-screen": "^5.0.0",
+    "@ionic-native/status-bar": "^5.0.0",
+    "cordova": "^8.1.2",
+```
+
+* Target `"ionic-cordova-build"` was added to the `angular.json`:
+
+```json
+  "ionic-cordova-build": {
+    "builder": "@ionic/angular-toolkit:cordova-build",
+    "options": {
+      "browserTarget": "app:build"
+    },
+    "configurations": {
+      "production": {
+        "browserTarget": "app:build:production"
+      }
+    }
+  }
+```
+
+* Added [`cordova/package.json`](cordova/package.json):
+
+```json
+    "cordova-browser": "^5.0.4",
+    "cordova-android": "^8.0.0",
+    "cordova-plugin-device": "^2.0.2",
+    "cordova-plugin-geolocation": "^4.0.1",
+    "cordova-plugin-ionic-keyboard": "^2.1.3",
+    "cordova-plugin-ionic-webview": "^3.1.2",
+    "cordova-plugin-splashscreen": "^5.0.2",
+    "cordova-plugin-statusbar": "^2.4.2",
+    "cordova-plugin-whitelist": "^1.3.3",
+```
+
+* Added Cordova configuration file [`cordova/config.xml`](cordova/config.xml):
+
+```xml
+    <platform name="browser">
+        <preference name="SplashScreen" value="resources/img/splash.png" />
+        <preference name="AutoHideSplashScreen" value="true" />
+        <preference name="SplashScreenDelay" value="500" />
+        <preference name="ShowSplashScreen" value="true" />
+    </platform>
+```
+
+Following dependencies were required by `@ionic/angular` but not by this project at all[1]:
+
+```json
+    "@angular/common": "~7.2.10",
+    "@angular/platform-browser": "~7.2.10",
+    "@angular/router": "~7.2.10",
+    "@angular/forms": "~7.2.10",
+```
+
+> [1] In the future, when using `@ionic/react` this should not be necessary.
 
 ### App Structure
 
@@ -395,7 +516,7 @@ When using CSS imported classes, use `class` attribute for Ionic elements and `c
 
 [`MainComponent.tsx`](src/main/front/MainComponent.tsx) fragment:
 
-```js
+```jsx
   <ion-card-header>
       <ion-card-title id='test'>The Ionic React App</ion-card-title>
       <ion-card-subtitle
@@ -420,6 +541,38 @@ When using CSS imported classes, use `class` attribute for Ionic elements and `c
 ```
 
 > Remember: any imported `.css` will require a `.d.ts` file, e.g.: [`MainComponent.css.d.ts`](src/main/front/MainComponent.css.d.ts)
+
+##### Routes on Native
+
+Any `href`[1] attribute in any `ion-*` tag needs:
+
+* To be removed.
+* Approach must be substituted with React-Router `<Link>`.
+
+e.g.
+
+change:
+
+```jsx
+<ion-button
+  href='/secondary'
+>
+  Switch
+</ion-button>
+```
+
+to:
+
+```jsx
+<Link to='/secondary'>
+  <ion-button>
+    Switch
+  </ion-button>
+</Link>
+```
+
+> [1] **`href` can not be used on native**.
+> `MemoryRouter` can also be used which will not depend on the address bar.
 
 #### Tests
 
@@ -464,11 +617,91 @@ Code coverage report requires [3]:
 > [2] This can be set even if not running tests as a root, useful for Local and CI.  
 > [3] Due to transpilation [Typescript +  Webpack].
 
+###### Angular issues
+
+Currently, the core of Angular CLI uses `System.import()`:
+
+* "`System.import() is deprecated and will be removed soon. Use import() instead.`"
+
+[Issue-21560 - Remove `System.import()` usage in favor of `import()`](https://github.com/angular/angular/issues/21560)
+
+  e.g.[1]:
+
+```js
+    SystemJsNgModuleLoader.prototype.loadAndCompile = function (path) {
+        var _this = this;
+        var _a = __read(path.split(_SEPARATOR), 2), module = _a[0], exportName = _a[1];
+        if (exportName === undefined) {
+            exportName = 'default';
+        }
+        return System.import(module)
+            .then(function (module) { return module[exportName]; })
+            .then(function (type) { return checkNotEmpty(type, module, exportName); })
+            .then(function (type) { return _this._compiler.compileModuleAsync(type); });
+    };
+```
+
+The issue: `System.import(module)`
+
+This issue forced to add in the [`webpack.config.test.js`](webpack.config.test.js), in order to remove the warning:
+
+```js
+    new FilterWarningsPlugin({
+      exclude: /System\.import/
+    })
+```
+
+[Issue-11580 - "request of a dependency is an expression"`](https://github.com/angular/angular/issues/11580)[2]:
+
+  e.g.[1]:
+
+```js
+    SystemJsNgModuleLoader.prototype.loadFactory = function (path) {
+        var _a = __read(path.split(_SEPARATOR), 2), module = _a[0], exportName = _a[1];
+        var factoryClassSuffix = FACTORY_CLASS_SUFFIX;
+        if (exportName === undefined) {
+            exportName = 'default';
+            factoryClassSuffix = '';
+        }
+        return System.import(this._config.factoryPathPrefix + module + this._config.factoryPathSuffix)
+            .then(function (module) { return module[exportName + factoryClassSuffix]; })
+            .then(function (factory) { return checkNotEmpty(factory, module, exportName); });
+    };
+```
+
+The issue: `System.import(this._config.factoryPathPrefix + module + this._config.factoryPathSuffix)`
+
+This issue forced to add [`ContextReplacementPlugin`](https://webpack.js.org/plugins/context-replacement-plugin/) in the [`webpack.config.test.js`](webpack.config.test.js):
+
+```js
+  new webpack.ContextReplacementPlugin(
+    /angular(\\|\/)core/,
+    path.join(__dirname, '../../src/main'),
+    {}
+  ),
+```
+
+> [1] In, `fesm5/core.js`, a long long file, around 24000 lines (and a soon to be deprecated code), where are the good practices? `-2` for Angular (May be Angular CLI was created to avoid developers from finding this issues).  
+> [2] since 2016.
+
 ##### E2E
 
 E2E Test Files name ends with `.e2e.js` and are written using [jasmine](https://jasmine.github.io) and [protractor](http://www.protractortest.org).
 
-Configuration is defined in: [protractor.conf.js](config/e2e/protractor.conf.js)
+Configuration is defined in [protractor.conf.js](config/e2e/protractor.conf.js):
+
+* E2E depends on Cordova, so Cordova Server must be started, this is accomplished in `onPrepare()`:
+
+```js
+  const appServer = cordovaServe()
+  ..
+  onPrepare() {
+    browser.wait(appServer.servePlatform('browser', {
+      port: 8000,
+      noServerInfo: false,
+      root: path.join(__dirname, '../../cordova')
+    }, 60000)
+```
 
 * E2E tests with Protractor requires `browser.ignoreSynchronization = true` to allow e2e for **non-angular apps**.
 * Two reporters are set:
@@ -497,6 +730,20 @@ Configuration is defined in: [protractor.conf.js](config/e2e/protractor.conf.js)
 ```
 
 > [1] This can be set even if not running e2e as a root, useful for Local and CI.
+
+###### Angular issue
+
+`"@angular-devkit/build-angular:protractor"` had to be removed from `angular.json` (which is used in [basecode-ts-ionic-react project](https://github.com/gmullerb/basecode-ts-ionic-react)), it tries to override dev server configuration, and **assumes** that dev server will always be `"@angular-devkit/build-angular:dev-server"`, so when trying to using `"@ionic/angular-toolkit:cordova-serve"` fails:
+
+```js
+  _startDevServer(options) {
+      const architect = this.context.architect;
+      const [project, targetName, configuration] = options.devServerTarget.split(':');
+      // Override dev server watch setting.
+      const overrides = { watch: false };
+```
+
+The `schema.json` of the `"@ionic/angular-toolkit:cordova-serve"` has `"additionalProperties": false` which is totally fine and prohibits new fields and then `"@angular-devkit/build-angular:protractor"` fails (if `"additionalProperties"` is changed to `true` (or removed), it will work, but **the issue is in the assumption of `"@angular-devkit/build-angular:protractor"`**).
 
 #### Types
 

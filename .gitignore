@@ -3,6 +3,10 @@
 build/
 node_modules/
 .ionic/
+# Cordova
+cordova/platforms/
+cordova/plugins/
+cordova/www/
 # IDEs
 .vscode
 .vscode/

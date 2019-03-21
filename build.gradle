@@ -62,9 +62,13 @@ task assemble(type: NpmTask) {
   args = ['run', 'assemble', '--silent']
   // gradle task settings
   inputs.dir 'src/main'
+  inputs.dir 'cordova/resources'
   inputs.file 'config/main/tsconfig.main.json'
+  inputs.file 'angular.json'
   inputs.file 'package.json'
-  outputs.dir 'build/www'
+  inputs.file 'cordova/config.xml'
+  inputs.file 'cordova/package.json'
+  outputs.dir 'cordova/www'
 }
 
 task assessStyleTest(type: NpmTask) {
@@ -116,13 +120,19 @@ task e2e(type: NpmTask) {
   inputs.dir 'config/e2e'
   inputs.dir 'src/main'
   inputs.dir 'src/e2e'
+  inputs.file 'angular.json'
   inputs.file 'package.json'
-  shouldRunAfter 'test', 'assessStyleE2e', 'build'
   outputs.dir 'build/reports/e2e'
+  dependsOn 'assemble'
+  shouldRunAfter 'test', 'assessStyleE2e', 'build'
+}
+
+task buildAndroid(type: NpmTask) {
+  args = ['run', 'buildAndroid', '--silent']
 }
 
 task run(type: NpmTask) {
   args = ['run', 'run', '--silent']
 }
 
-defaultTasks 'assessCommon', 'assessGradle', 'npmInstall', 'assessStyleConfig', 'build', 'e2e'
+defaultTasks 'assessCommon', 'assessGradle', 'npmInstall', 'assessStyleConfig', 'build', 'assessStyleE2e', 'e2e'

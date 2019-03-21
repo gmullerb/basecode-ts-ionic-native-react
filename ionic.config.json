@@ -1,0 +1,10 @@
+{
+  "name": "base-ts-ionic-native-react-app",
+  "integrations": {
+    "cordova": {
+      "root": "cordova"
+    }
+  },
+  "type": "angular",
+  "telemetry": false
+}

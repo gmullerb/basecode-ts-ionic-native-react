@@ -65,6 +65,27 @@ describe('mainStore tests', () => {
     })
   })
 
+  it('should reduce when Ionic Ready action is received', () => {
+    const oldState = {
+      isOn: false,
+      text: 'initial'
+    }
+    const newState = mainStore.reduce(oldState, {
+      type: 'IONIC_READY',
+      data: {
+        device: 'device',
+        location: 'location'
+      }
+    })
+
+    expect(newState).toEqual({
+      isOn: false,
+      text: 'initial',
+      device: 'device',
+      location: 'location'
+    })
+  })
+
   it('should return prevState when an invalid action is received', () => {
     const oldState = {
       isOn: false,

@@ -6,3 +6,14 @@
   font-size: 10px;
   color: red;
 }
+
+.dataContainer {
+  border: 1px darkred solid;
+  border-radius: 5px;
+  margin: 4px;
+  padding: 2px;
+}
+
+.data {
+  color: gray;
+}

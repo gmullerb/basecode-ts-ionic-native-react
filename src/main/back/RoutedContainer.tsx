@@ -10,6 +10,8 @@ import MainComponent from '../front/MainComponent'
 import SecondaryComponent from '../front/SecondaryComponent'
 
 import MainStoreState from './MainStoreState'
+import mainIonic from './singletons/ionicSystem'
+import mainActions from './singletons/mainActions'
 import mainStore from './singletons/mainStore'
 
 class RoutedContainer extends Component<{}, MainStoreState> {
@@ -21,6 +23,10 @@ class RoutedContainer extends Component<{}, MainStoreState> {
     return {
       main: mainStore.getState()
     }
+  }
+
+  componentDidMount() {
+    mainIonic.ready().then(() => mainActions.ionicReady())
   }
 
   renderMainComponent = (routeProps: RouteComponentProps) => {
@@ -45,7 +51,6 @@ class RoutedContainer extends Component<{}, MainStoreState> {
       </BrowserRouter>
     )
   }
-
 }
 
 export default Container.create(RoutedContainer)

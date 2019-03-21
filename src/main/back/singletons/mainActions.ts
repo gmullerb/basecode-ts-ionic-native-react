@@ -1,9 +1,12 @@
 //  Copyright (c) 2019 Gonzalo Müller Bravo.
 //  Licensed under the MIT License (MIT), see LICENSE.txt
+import { Device } from '@ionic-native/device/ngx'
+import { Geolocation, Geoposition } from '@ionic-native/geolocation/ngx';
+
 import mainDispatcher from './mainDispatcher'
 
 export interface ActionType {
-  type: 'ON' | 'OFF' | 'TOGGLE'
+  type: 'ON' | 'OFF' | 'TOGGLE' | 'IONIC_READY'
   data?: any
 }
 
@@ -20,6 +23,14 @@ interface OffAction extends ActionType {
 interface ToggleAction extends ActionType {
   type: 'TOGGLE'
   data: string
+}
+
+interface IonicReadyAction extends ActionType {
+  type: 'IONIC_READY'
+  data: {
+    device: Device,
+    location: Geoposition
+  }
 }
 
 const mainActions = {
@@ -40,6 +51,19 @@ const mainActions = {
       type: 'TOGGLE',
       data: 'toggle'
     })
+  },
+  ionicReady() {
+    const geolocation = new Geolocation()
+      .getCurrentPosition()
+      .then((location: Geoposition) => {
+        mainDispatcher.dispatch({
+          type: 'IONIC_READY',
+          data: {
+            device: new Device(),
+            location
+          }
+        })
+      })
   }
 }
 

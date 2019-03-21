@@ -23,18 +23,26 @@ class MainStore extends ReduceStore<MainState, ActionType> {
     switch (action.type) {
         case 'ON':
             return {
+              ...prevState,
               isOn: true,
               text: action.data
             }
         case 'OFF':
             return {
+              ...prevState,
               isOn: false,
               text: action.data
             }
         case 'TOGGLE':
             return {
+              ...prevState,
               isOn: !prevState.isOn,
               text: 'toggle'
+            }
+        case 'IONIC_READY':
+            return {
+              ...prevState,
+              ...action.data
             }
         default:
             return prevState

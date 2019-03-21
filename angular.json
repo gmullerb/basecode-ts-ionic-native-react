@@ -18,7 +18,6 @@
             "outputPath": "build/www",
             "index": "src/main/index.html",
             "main": "src/main/mainEntryPoint.tsx",
-            "polyfills": "src/main/polyfills.ts",
             "tsConfig": "config/main/tsconfig.main.json",
             "assets": [
               {
@@ -72,35 +71,14 @@
             }
           }
         },
-        "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
+        "ionic-cordova-build": {
+          "builder": "@ionic/angular-toolkit:cordova-build",
           "options": {
             "browserTarget": "app:build"
           },
           "configurations": {
             "production": {
               "browserTarget": "app:build:production"
-            },
-            "ci": {
-              "progress": false
-            }
-          }
-        }
-      }
-    },
-    "app-e2e": {
-      "root": "src/e2e/",
-      "projectType": "application",
-      "architect": {
-        "e2e": {
-          "builder": "@angular-devkit/build-angular:protractor",
-          "options": {
-            "protractorConfig": "config/e2e/protractor.conf.js",
-            "devServerTarget": "app:serve"
-          },
-          "configurations": {
-            "ci": {
-              "devServerTarget": "app:serve:ci"
             }
           }
         }

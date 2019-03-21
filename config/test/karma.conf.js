@@ -1,7 +1,7 @@
 //  Copyright (c) 2019 Gonzalo Müller Bravo.
 //  Licensed under the MIT License (MIT), see LICENSE.txt
 
-var webpackConfig = require('./webpack.config.test.js');
+var webpackConfig = require('./webpack.config.test.js')
 
 module.exports = function (config) {
   config.set({
@@ -68,5 +68,5 @@ module.exports = function (config) {
     },
     autoWatch: false,
     singleRun: true
-  });
-};
+  })
+}

@@ -2,6 +2,8 @@
 //  Licensed under the MIT License (MIT), see LICENSE.txt
 
 declare const styles: {
+  readonly data: string
+  readonly dataContainer: string
   readonly theInput: string,
   readonly theText: string
 }
